@@ -1,0 +1,15 @@
+# A test for removal.
+> init
+<<<
++ test.txt test2.txt
+> add test.txt
+<<<
+> add test2.txt
+<<<
+> commit "added test.txt and test2.txt"
+<<<
++ test.txt test2.txt
+# Must change
+> checkout -- test.txt
+<<<
+= test.txt test2.txt

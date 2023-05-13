@@ -1,0 +1,45 @@
+# Check that we can check out a previous version.
+> init
+<<<
++ test.txt test2.txt
+> add test.txt
+<<<
+> commit "first test.txt"
+<<<
++ test.txt test2.txt
+> add test.txt
+<<<
+> commit "version 2 of test.txt"
+<<<
+= test.txt test2.txt
+# Each ${HEADER} captures its commit UID.
+D UID "[a-f0-9]+"
+D HEADER "commit (${UID})"
+D DATE "Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d"
+> log
+===
+${HEADER}
+${DATE}
+first test.txt
+
+===
+${HEADER}
+${DATE}
+version 2 of test.txt
+
+===
+${HEADER}
+${DATE}
+initial commit
+
+<<<*
+# UID of second version
+D UID2 "${1}"
+# UID of current version
+D UID1 "${2}"
+> checkout ${UID1} -- test.txt
+<<<
+= test.txt test.txt
+> checkout ${UID2} -- test2.txt
+<<<
+= test.txt test2.txt
